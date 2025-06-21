@@ -87,20 +87,10 @@ if (req.url == "/") {
     return
 } else if (req.url == "/:asignatura"){
     let asignatura = req.params.asignatura.toLowerCase();
-
+    console.log(asignatura);
     res.writeHead(200, {"content-type": "text/html"});
     res.write(style);
     res.write(`<h1>Alumnos matriculados en la asignatura: ${asignatura.toUppercase()}</h1>`);
-
-    res.end();
-    return
-} else if (req.url == "/:nombre/:apellido"){
-    let nombre = req.params.nombre.toLowerCase();
-    let apellido = req.params.apellido.toLowerCase();
-
-    res.writeHead(200, {"content-type": "text/html"});
-    res.write(style);
-    res.write("<h1>Todos los alumnos</h1>");
 
     res.end();
     return
