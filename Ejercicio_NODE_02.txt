@@ -1,0 +1,72 @@
+APLICACIÓN: ESCUELA
+
+El objetivo es matricular alumnos en una escuela y poder mostrar esa información.
+Utilizaremos un fichero llamado escuela.js para la programación y otro llamado escuela.json
+para guardar los datos.
+
+La matriculación se realizará así:
+node escuela.js nombre_alumno apellido_alumno edad asignatura
+
+Nota 1: No sabremos por adelantado cuáles son las asignaturas.
+Nota 2: Admitiremos nombres compuestos si se escriben 
+con un guión en medio, así: Anna-Maria
+
+En cada matriculación los datos del alumno se incorporarán al fichero .json,
+donde quedarán registrados en ese formato, obviamente.
+
+Podremos borrar un alumno de la lista así:
+node escuela.js nombre_alumno apellido_alumno -1
+Si el alumno no está en la lista debe aparecer este mensaje:
+"No tenemos matriculado a ese alumno"
+
+Si escribimos:
+node escuela.js
+Apareceran los datos de todos los alumnos, así:
+
+Alumnos matriculados
+====================
+nombre_1 apellido_1 edad_1 asignatura_x
+nombre_2 apellido_2 edad_2 asignatura_y
+...
+nombre_n apellido_n edad_n asignatura_z
+---------------------------------------
+Total: n alumnos matriculados
+
+Ordenados por apellido, nombre, asignatura de forma descendente
+(de la A a Z)
+
+Si escribimos:
+node escuela.js nombre_alumno apellido_alumno
+Deben aparecer las asignaturas en las que está matriculado así:
+
+El alumno nombre_alumno apellido_alumno está matriculado de:
+    -- X 
+    -- Y
+
+Pero si no estuviera en la lista debe aparecer este mensaje:
+"No tenemos matriculado a ese alumno"
+
+Si escribimos:
+node escuela.js asignatura (cualquiera que sea)
+Aparecerán los datos de los alumnos matriculados en ella, así:
+
+Alumnos matriculados en X (X es la asignatura)
+=========================
+nombre_1 apellido_1 edad_1
+nombre_2 apellido_2 edad_2
+...
+nombre_n apellido_n edad_n
+--------------------------------
+Total: n alumnos matriculados
+
+Cualquier otra forma de acceder a los datos debe de considerarse un error
+y debe aparecer el correspondiente mensaje
+
+------------------------------------------------------------------------------------
+
+Cuando funcione la versión por terminal prepara otra por servidor web, así:
+
+http://localhost:4000/ <- todos los alumnos
+http://localhost:4000/nombre_alumno/apellido_alumno <- datos de un alumno
+http://localhost:4000/asignatura <- alumnos de una asignatura
+

@@ -1,0 +1,38 @@
+[
+  {
+    "nombre": "Antonio",
+    "apellido": "Perez",
+    "edad": "70",
+    "asignatura": "ASP"
+  },
+  {
+    "nombre": "Antonio",
+    "apellido": "Perez",
+    "edad": "70",
+    "asignatura": "PHP"
+  },
+  {
+    "nombre": "Peter",
+    "apellido": "Parker",
+    "edad": "50",
+    "asignatura": "C++"
+  },
+  {
+    "nombre": "Francisco",
+    "apellido": "Vazquez",
+    "edad": "55",
+    "asignatura": "JAVA"
+  },
+  {
+    "nombre": "Carolina",
+    "apellido": "Artero",
+    "edad": "60",
+    "asignatura": "CSS"
+  },
+  {
+    "nombre": "Carolina",
+    "apellido": "Artero",
+    "edad": "60",
+    "asignatura": "ASP"
+  }
+]
