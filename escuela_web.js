@@ -22,6 +22,17 @@ if (!fs.existsSync("escuela.json")) {
     existeJson = true; // Ahora sabemos que el archivo JSON existe
 }
 
+// Guardo en un array las asignaturas distintas que hay en el JSON
+let asignaturas = [];
+if (existeJson) {
+    for (let i = 0; i < jsonLeido.length; i++) {
+        if (!asignaturas.includes(jsonLeido[i].asignatura)) {
+            asignaturas.push(jsonLeido[i].asignatura);
+        }
+    }
+}
+
+console.log(asignaturas);
 // estilos CSS
 const style = `
 <style>
