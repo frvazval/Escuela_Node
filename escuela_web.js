@@ -6,9 +6,12 @@ const url = require('node:url');
 
 // Función para iniciar el servidor web, es asyncrona para poder usar await
 async function iniciarServidor() {
-    // Carga las variables del .env
-    await process.loadEnvFile(); // await sirve para detener temporalmente la ejecución hasta que termine de cargar el archivo .env
-
+    // Carga las variables del .env   
+    try {
+        await process.loadEnvFile(); // await sirve para detener temporalmente la ejecución hasta que termine de cargar el archivo .env
+    } catch (error) {
+        console.warn("Archivo .env no encontrado o falló la carga. Usando valores por defecto.");
+    }
     const PUERTO = process.env.PORT || process.argv[2] || 8888;
 
     let mensaje = "";
