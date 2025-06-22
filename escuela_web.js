@@ -3,9 +3,11 @@ const fs = require('node:fs');
 const url = require('node:url');
 
 // Requiere Node.js >= 21 y ejecutarse con --env-file
+
+// Función para iniciar el servidor web, es asyncrona para poder usar await
 async function iniciarServidor() {
     // Carga las variables del .env
-    await process.loadEnvFile();
+    await process.loadEnvFile(); // await sirve para detener temporalmente la ejecución hasta que termine de cargar el archivo .env
 
     const PUERTO = process.env.PORT || process.argv[2] || 8888;
 
@@ -14,7 +16,7 @@ async function iniciarServidor() {
     let existeJson = false;
 
     if (!fs.existsSync("escuela.json")) {
-        mensaje = "Aún no hay alumnos matriculados en la escuela";
+        mensaje = "Aun no hay alumnos matriculados en la escuela";
     } else {
         const lectura = fs.readFileSync("escuela.json", "utf-8");
         jsonLeido = JSON.parse(lectura);
@@ -90,7 +92,7 @@ async function iniciarServidor() {
             res.write(`<p><strong>Edad:</strong> ${alumnoEjemplo.edad}</p>`);
             res.write(`<p><strong>Asignaturas:</strong> ${asignaturas.join(", ")}</p>`);
         } else {
-            res.write(`<h2>No se encontró al alumno "${nombre} ${apellido}"</h2>`);
+            res.write(`<h2>No se encontro al alumno "${nombre} ${apellido}"</h2>`);
         }
     }
 
@@ -108,4 +110,5 @@ async function iniciarServidor() {
     });
 }
 
+// Inicia el servidor
 iniciarServidor();
