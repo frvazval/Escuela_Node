@@ -1,17 +1,5 @@
 [
   {
-    "nombre": "Antonio",
-    "apellido": "Perez",
-    "edad": "70",
-    "asignatura": "ASP"
-  },
-  {
-    "nombre": "Antonio",
-    "apellido": "Perez",
-    "edad": "70",
-    "asignatura": "PHP"
-  },
-  {
     "nombre": "Peter",
     "apellido": "Parker",
     "edad": "50",
