@@ -59,9 +59,9 @@ async function iniciarServidor() {
     </style>`;
 
     const server = http.createServer((req, res) => {
-        const parsedUrl = url.parse(req.url, true);
-        const path = decodeURIComponent(parsedUrl.pathname.trim());
-        const pathParts = path.split("/").filter(p => p !== "");
+    const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
+    const path = decodeURIComponent(parsedUrl.pathname.trim());
+    const pathParts = path.split("/").filter(p => p !== "");
 
         res.writeHead(200, { "content-type": "text/html" });
         res.write(style);
