@@ -10,7 +10,7 @@ async function iniciarServidor() {
     try {
         await process.loadEnvFile(); // await sirve para detener temporalmente la ejecución hasta que termine de cargar el archivo .env
     } catch (error) {
-        console.warn("Archivo .env no encontrado o falló la carga. Usando valores por defecto.");
+        console.warn("Archivo .env no encontrado o falló la carga. Usando valores por parametro o por defecto.");
     }
     const PUERTO = process.env.PORT || process.argv[2] || 8888;
 
