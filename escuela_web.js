@@ -23,12 +23,36 @@ async function iniciarServidor() {
         existeJson = true;
     }
 
+    // estilos CSS
     const style = `
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; }
-        h1 { font-family: Verdana; color: black; font-size: 2.5rem; text-align: center; margin: 1rem; }
-        p { font-size: 1.5rem; text-align: center; color: darkblue; }
-        h2 { text-align: center; margin: 1rem; color: darkred; }
+        * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+        }
+
+        h1 {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        color: black;
+        font-size: 2.5rem;
+        text-align: center;
+        margin: 1rem;
+        }
+
+        p {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 1.5rem;
+            text-align: center;
+            color: darkblue;
+        }
+            
+        h2 { 
+        text-align: center;
+        margin: 1rem;
+        color: darkred;
+        }
     </style>`;
 
     const server = http.createServer((req, res) => {
@@ -56,7 +80,7 @@ async function iniciarServidor() {
                     res.write(`<p>${alumno.nombre} ${alumno.apellido}, Edad: ${alumno.edad}, Asignatura: ${alumno.asignatura}</p>`);
                 }
             } else {
-                res.write("<h2>Aún no hay alumnos matriculados</h2>");
+                res.write("<h2>Aun no hay alumnos matriculados</h2>");
             }
 
         } else if (pathParts.length === 1) {
@@ -72,29 +96,33 @@ async function iniciarServidor() {
                 } else {
                     res.write(`<h2>No hay alumnos en la asignatura "${asignatura}"</h2>`);
                 }
+            } else {
+                res.write("<h2>Aun no hay alumnos matriculados</h2>");
             }
 
         } else if (pathParts.length === 2) {
-    const nombre = pathParts[0].toLowerCase();
-    const apellido = pathParts[1].toLowerCase();
-    res.write(`<h1>Alumno: ${nombre} ${apellido}</h1>`);
+            const nombre = pathParts[0].toLowerCase();
+            const apellido = pathParts[1].toLowerCase();
+            res.write(`<h1>Alumno: ${nombre} ${apellido}</h1>`);
 
-    if (existeJson) {
-        const coincidencias = jsonLeido.filter(a =>
-            a.nombre.toLowerCase() === nombre &&
-            a.apellido.toLowerCase() === apellido
-        );
+            if (existeJson) {
+                const coincidencias = jsonLeido.filter(a =>
+                    a.nombre.toLowerCase() === nombre &&
+                    a.apellido.toLowerCase() === apellido
+                );
 
-        if (coincidencias.length > 0) {
-            const alumnoEjemplo = coincidencias[0]; // Para mostrar edad
-            const asignaturas = coincidencias.map(a => a.asignatura);
+                if (coincidencias.length > 0) {
+                const alumnoEjemplo = coincidencias[0]; // Para mostrar edad
+                const asignaturas = coincidencias.map(a => a.asignatura);
             
-            res.write(`<p><strong>Edad:</strong> ${alumnoEjemplo.edad}</p>`);
-            res.write(`<p><strong>Asignaturas:</strong> ${asignaturas.join(", ")}</p>`);
-        } else {
-            res.write(`<h2>No se encontro al alumno "${nombre} ${apellido}"</h2>`);
-        }
-    }
+                res.write(`<p><strong>Edad:</strong> ${alumnoEjemplo.edad}</p>`);
+                res.write(`<p><strong>Asignaturas:</strong> ${asignaturas.join(", ")}</p>`);
+                } else {
+                    res.write(`<h2>No se encontro al alumno "${nombre} ${apellido}"</h2>`);
+                }
+            } else {
+                res.write("<h2>Aun no hay alumnos matriculados</h2>");
+            }
 
 
         } else {
@@ -102,7 +130,7 @@ async function iniciarServidor() {
             res.write("<h2>Ruta no reconocida</h2>");
         }
 
-        res.end();
+    res.end();
     });
 
     server.listen(PUERTO, () => {
