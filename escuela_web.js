@@ -86,8 +86,7 @@ async function iniciarServidor() {
         if (coincidencias.length > 0) {
             const alumnoEjemplo = coincidencias[0]; // Para mostrar edad
             const asignaturas = coincidencias.map(a => a.asignatura);
-
-            res.write(`<p><strong>Nombre:</strong> ${alumnoEjemplo.nombre} ${alumnoEjemplo.apellido}</p>`);
+            
             res.write(`<p><strong>Edad:</strong> ${alumnoEjemplo.edad}</p>`);
             res.write(`<p><strong>Asignaturas:</strong> ${asignaturas.join(", ")}</p>`);
         } else {
