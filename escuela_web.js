@@ -22,17 +22,6 @@ if (!fs.existsSync("escuela.json")) {
     existeJson = true; // Ahora sabemos que el archivo JSON existe
 }
 
-// Guardo en un array las asignaturas distintas que hay en el JSON
-let asignaturas = [];
-if (existeJson) {
-    for (let i = 0; i < jsonLeido.length; i++) {
-        if (!asignaturas.includes(jsonLeido[i].asignatura)) {
-            asignaturas.push(jsonLeido[i].asignatura);
-        }
-    }
-}
-
-console.log(asignaturas);
 // estilos CSS
 const style = `
 <style>
@@ -85,16 +74,7 @@ if (req.url == "/") {
     }
     res.end();
     return
-} else if (req.url == "/:asignatura"){
-    let asignatura = req.params.asignatura.toLowerCase();
-    console.log(asignatura);
-    res.writeHead(200, {"content-type": "text/html"});
-    res.write(style);
-    res.write(`<h1>Alumnos matriculados en la asignatura: ${asignatura.toUppercase()}</h1>`);
-
-    res.end();
-    return
-} else {
+} else  {
     // Ruta desconocida
     res.writeHead(200, {"content-type": "text/html"});
     res.write(style);
@@ -102,13 +82,11 @@ if (req.url == "/") {
     res.end();
     return
 }
-
-
-})
+});
 
 // Levanta el servidor Web
 server.listen(PUERTO, () => {
     console.log(`Servidor levantado en http://localhost:${PUERTO}`);
-})
+});
 
 
