@@ -1,92 +1,112 @@
-// Carga los modulos http y fs
 const http = require('node:http');
-const fs =require("node:fs");
+const fs = require('node:fs');
+const url = require('node:url');
 
-// Obtiene los datos del fichero .env
-process.loadEnvFile();
+// Requiere Node.js >= 21 y ejecutarse con --env-file
+async function iniciarServidor() {
+    // Carga las variables del .env
+    await process.loadEnvFile();
 
-// Puerto de conexión
-const PUERTO = process.env.PORT || process.argv[2] || 8888;
+    const PUERTO = process.env.PORT || process.argv[2] || 8888;
 
-// Miro si esxiste el fichero json
-let existeJson;
-if (!fs.existsSync("escuela.json")) {
-    // Si no existe, creo un mensaje indicandolo
-    existeJson = false;
-    mensaje = "Aun no hay alumnos matriculados en la escuela";
-    
-} else  {
-    // Si existe, leo el archivo JSON
-    let lectura = fs.readFileSync("escuela.json", "utf-8");
-    jsonLeido = JSON.parse(lectura);
-    existeJson = true; // Ahora sabemos que el archivo JSON existe
-}
+    let mensaje = "";
+    let jsonLeido = [];
+    let existeJson = false;
 
-// estilos CSS
-const style = `
-<style>
-
-    * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+    if (!fs.existsSync("escuela.json")) {
+        mensaje = "Aún no hay alumnos matriculados en la escuela";
+    } else {
+        const lectura = fs.readFileSync("escuela.json", "utf-8");
+        jsonLeido = JSON.parse(lectura);
+        existeJson = true;
     }
 
-    h1 {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    color: black;
-    font-size: 2.5rem;
-    text-align: center;
-    margin: 1rem;
-    }
+    const style = `
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; }
+        h1 { font-family: Verdana; color: black; font-size: 2.5rem; text-align: center; margin: 1rem; }
+        p { font-size: 1.5rem; text-align: center; color: darkblue; }
+        h2 { text-align: center; margin: 1rem; color: darkred; }
+    </style>`;
 
-    p {
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 1.5rem;
-        text-align: center;
-        color: darkblue;
-    }
-    
-</style>`;
+    const server = http.createServer((req, res) => {
+        const parsedUrl = url.parse(req.url, true);
+        const path = decodeURIComponent(parsedUrl.pathname.trim());
+        const pathParts = path.split("/").filter(p => p !== "");
 
-// Servidor Web
-const server = http.createServer((req, res) => {
+        res.writeHead(200, { "content-type": "text/html" });
+        res.write(style);
 
-if (req.url == "/") {
-    // Ruta raiz, muestra todos los alumnos    
-    res.writeHead(200, {"content-type": "text/html"});
-    res.write(style);
-    res.write("<h1>Todos los alumnos</h1>");    
+        if (path === "/" || pathParts.length === 0) {
+            // Muestra todos los alumnos
+            res.write("<h1>Todos los alumnos</h1>");
+
+            if (existeJson && jsonLeido.length > 0) {
+                const alumnosOrdenados = jsonLeido.sort((a, b) => {
+                    const porNombre = a.nombre.localeCompare(b.nombre, "es-ES");
+                    if (porNombre !== 0) return porNombre;
+                    const porApellido = a.apellido.localeCompare(b.apellido, "es-ES");
+                    if (porApellido !== 0) return porApellido;
+                    return a.asignatura.localeCompare(b.asignatura, "es-ES");
+                });
+
+                for (const alumno of alumnosOrdenados) {
+                    res.write(`<p>${alumno.nombre} ${alumno.apellido}, Edad: ${alumno.edad}, Asignatura: ${alumno.asignatura}</p>`);
+                }
+            } else {
+                res.write("<h2>Aún no hay alumnos matriculados</h2>");
+            }
+
+        } else if (pathParts.length === 1) {
+            const asignatura = pathParts[0].toLowerCase();
+            res.write(`<h1>Alumnos en la asignatura: ${asignatura}</h1>`);
+
+            if (existeJson) {
+                const alumnos = jsonLeido.filter(a => a.asignatura.toLowerCase() === asignatura);
+                if (alumnos.length > 0) {
+                    for (const alumno of alumnos) {
+                        res.write(`<p>${alumno.nombre} ${alumno.apellido}, Edad: ${alumno.edad}</p>`);
+                    }
+                } else {
+                    res.write(`<h2>No hay alumnos en la asignatura "${asignatura}"</h2>`);
+                }
+            }
+
+        } else if (pathParts.length === 2) {
+    const nombre = pathParts[0].toLowerCase();
+    const apellido = pathParts[1].toLowerCase();
+    res.write(`<h1>Alumno: ${nombre} ${apellido}</h1>`);
 
     if (existeJson) {
-        // Para ordenar los datos por apellido, nombre y asignatura de forma ascendente    
-        let alumnosOrdenados = jsonLeido.sort((a, b) => a.asignatura.localeCompare(b.asignatura, "es-ES", { numeric: true }));
-        alumnosOrdenados = alumnosOrdenados.sort((a, b) => a.apellido.localeCompare(b.apellido, "es-ES", { numeric: true }));
-        alumnosOrdenados = alumnosOrdenados.sort((a, b) => a.nombre.localeCompare(b.nombre, "es-ES", { numeric: true }));
-    
-        for(let i = 0; i < alumnosOrdenados.length; i++) {
-            res.write(`<p>${alumnosOrdenados[i].nombre} ${alumnosOrdenados[i].apellido}, Edad: ${alumnosOrdenados[i].edad}, Asignatura: ${alumnosOrdenados[i].asignatura}</p>`);
+        const coincidencias = jsonLeido.filter(a =>
+            a.nombre.toLowerCase() === nombre &&
+            a.apellido.toLowerCase() === apellido
+        );
+
+        if (coincidencias.length > 0) {
+            const alumnoEjemplo = coincidencias[0]; // Para mostrar edad
+            const asignaturas = coincidencias.map(a => a.asignatura);
+
+            res.write(`<p><strong>Nombre:</strong> ${alumnoEjemplo.nombre} ${alumnoEjemplo.apellido}</p>`);
+            res.write(`<p><strong>Edad:</strong> ${alumnoEjemplo.edad}</p>`);
+            res.write(`<p><strong>Asignaturas:</strong> ${asignaturas.join(", ")}</p>`);
+        } else {
+            res.write(`<h2>No se encontró al alumno "${nombre} ${apellido}"</h2>`);
+        }
+    }
+
+
+        } else {
+            res.write("<h1>Error 404</h1>");
+            res.write("<h2>Ruta no reconocida</h2>");
         }
 
-    } else {
-        res.write("<h2>Aun no hay alumnos matriculados</h2>");
-    }
-    res.end();
-    return
-} else  {
-    // Ruta desconocida
-    res.writeHead(200, {"content-type": "text/html"});
-    res.write(style);
-    res.write("<h1>Error 404</h1>");
-    res.end();
-    return
+        res.end();
+    });
+
+    server.listen(PUERTO, () => {
+        console.log(`Servidor levantado en http://localhost:${PUERTO}`);
+    });
 }
-});
 
-// Levanta el servidor Web
-server.listen(PUERTO, () => {
-    console.log(`Servidor levantado en http://localhost:${PUERTO}`);
-});
-
-
+iniciarServidor();
