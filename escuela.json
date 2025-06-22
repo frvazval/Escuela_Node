@@ -1,0 +1,20 @@
+[
+  {
+    "nombre": "Pepe",
+    "apellido": "Grillo",
+    "edad": "70",
+    "asignatura": "HTML"
+  },
+  {
+    "nombre": "Bruce",
+    "apellido": "Wayne",
+    "edad": "55",
+    "asignatura": "ASP"
+  },
+  {
+    "nombre": "Pepe",
+    "apellido": "Grillo",
+    "edad": "70",
+    "asignatura": "ASP"
+  }
+]
