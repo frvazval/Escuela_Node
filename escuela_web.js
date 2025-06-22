@@ -30,18 +30,18 @@ async function iniciarServidor() {
     const style = `
     <style>
         * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
         }
 
         h1 {
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-        color: black;
-        font-size: 2.5rem;
-        text-align: center;
-        margin: 1rem;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: black;
+            font-size: 2.5rem;
+            text-align: center;
+            margin: 1rem;
         }
 
         p {
@@ -52,9 +52,9 @@ async function iniciarServidor() {
         }
             
         h2 { 
-        text-align: center;
-        margin: 1rem;
-        color: darkred;
+            text-align: center;
+            margin: 1rem;
+            color: darkred;
         }
     </style>`;
 
